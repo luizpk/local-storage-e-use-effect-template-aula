@@ -1,23 +1,21 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Exercicio1 from './Components/exercicio1';
+import Exercicio2 from './Components/exercicio2';
+import Exercicio3 from './Components/exercicio3';
+import FormLocal from './PraticaGuiada/FormLocal';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Aula de Local Storage</h1>
+      <hr/>
+      <Exercicio1/>
+      <hr/>
+      {/* <Exercicio2/>
+      <hr/>
+      <Exercicio3/> */}
+      <FormLocal/>
     </div>
   );
 }
