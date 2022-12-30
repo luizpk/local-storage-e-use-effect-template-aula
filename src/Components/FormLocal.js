@@ -1,120 +1,78 @@
 import React, { useEffect, useState } from "react";
-import {Form} from './style'
+import { Form } from "./style";
 
-export default function FormLocal(){
-    console.log("Renderizou form")
-    //exercicio1
-    const[nome,setNome] = useState("")
-    const[tarefa,setTarefa] = useState("")
-    const[listaTarefa,setListaTarefa] = useState([])
-    
-    
-    const onchangeNome = (event)=>{
-        setNome(event.target.value)
-        console.log("alterar input nome")
-    }
+export default function FormLocal() {
+  const [nome, setNome] = useState("");
+  const [tarefa, setTarefa] = useState("");
+  const [listaTarefa, setListaTarefa] = useState([]);
 
-    const onClickSave = ()=>{
-        localStorage.setItem('nomeUsuario', nome)
-        // setNome("")
-    }
+  const onChangeName = (e) => {
+    setNome(e.target.value)
+  }
 
-    const onClickLoad = ()=>{
-        const dadoAcessado = localStorage.getItem('nomeUsuario')
-        // setNome(dadoAcessado)
-        alert(dadoAcessado)
-    }
-    
-    //exercicio2
-    const onchangeTarefa = (event)=>{
-        setTarefa(event.target.value)
-    }
-    
-    const onClickSaveTarefa = (e)=> {
-        setListaTarefa([tarefa, ...listaTarefa])
-        setTarefa("")
-    }
+  const onChangeTarefa = (e) => {
+    setTarefa(e.target.value)
+  }
 
-    // const saveTaks = ()=>{
-    //     const listaTarefaString = JSON.stringify(listaTarefa)
-    //     localStorage.setItem("tarefa",listaTarefaString )
-    // }
+  const onChangeListaTarefa = (e) => {
+    setListaTarefa(e.target.value)
+  }
 
-    // const loadTask = ()=>{
-    //     setListaTarefa(JSON.parse(localStorage.getItem("tarefa")))
-    // }
-    
-
-    //exercicio3
-
-    // useEffect(()=>{
-    //     onchangeNome()
-    // }, [tarefa])
-
-    // document.title = nome
-
-    // useEffect(()=>{
-    //     document.title = nome
-    // },[tarefa])
-
-    useEffect(()=>{
-        if(nome.length){
-        localStorage.setItem('nomeUsuario', nome)
-        }
-    },[nome])
+  const saveData = () => {
+    localStorage.setItem('user',nome);
+  };
 
 
-    useEffect(()=>{
-        console.log("[] - Roda a cada montagem do componente")
-        if(listaTarefa.length){
-            setListaTarefa(JSON.parse(localStorage.getItem("tarefa")))
-        }else{
-            // localStorage.setItem("tarefa","[]" )
-            // setListaTarefa(JSON.parse(localStorage.getItem("tarefa")))
-        }
-       
-    },[])
+  const loadData = () => {
+    const nomeLoad = localStorage.getItem('user')
+    setNome(nomeLoad)
+  }
 
-    useEffect(()=>{
-        console.log("[nome] - Roda a cada alteração no estado do componente do parâmetro")
-        if(listaTarefa.length){
-            console.log(listaTarefa.length)
-            const listaTarefaString = JSON.stringify(listaTarefa)
-            localStorage.setItem("tarefa",listaTarefaString )
-        }
-    },[listaTarefa])
+  const atualizarLista = () =>{
+    setListaTarefa([tarefa, ...listaTarefa])
+  }
 
+  const saveTarefa = () => {
+    const stringficado = JSON.stringify(listaTarefa)
+    localStorage.setItem('listaTarefas', stringficado)
+  }
 
-    // useEffect(()=>{
-    //     console.log("vazio - Roda a cada alteração em qualquer estado do componente")
-    // })
+  const loadTarefa = () => {
+    const parseado = JSON.parse(localStorage.getItem('listaTarefas'))
+    setListaTarefa(parseado)
+  }
 
-    return(
-        <Form>
-            <h3>Prática 1</h3>
-            <label htmlFor="nome">nome: 
-            <input name="nome" id="nome" onChange={onchangeNome} value={nome}/>
-            </label>
-            <div>
-                <button onClick={onClickSave}>Guardar Dados</button>
-                <button onClick={onClickLoad}>Acessar Dados</button>
-            </div>
-            <br/>
-            <h3>Prática 2</h3>
-            <label htmlFor="tarefa">tarefa:
-            <input name="tarefa" id="tarefa" onChange={onchangeTarefa} value={tarefa}/>
-            </label>
-            <button type="button" onClick={onClickSaveTarefa}>adicionar Tarefa</button>
-            <ul>
-                {listaTarefa.map((task) =>{
-                    return <li key={task}>{task}</li>
-                }) 
-                }
-            </ul>
-            <div>
-                {/* <button onClick={saveTaks}>Guardar tarefa</button> */}
-                {/* <button onClick={loadTask}>Acessar tarefa</button> */}
-            </div>
-        </Form>
-    )
+  useEffect(()=>{
+   localStorage.setItem('user',nome);
+  },[nome]);
+
+  return (
+    <Form>
+      <h3>Prática 1</h3>
+      <label htmlFor="nome">
+        nome:
+        <input value={nome} onChange={onChangeName} name="nome" id="nome" />
+      </label>
+      <div>
+        <button onClick={saveData}>Guardar Dados</button>
+        <button onClick={loadData}>Acessar Dados</button>
+      </div>
+      <br />
+      <h3>Prática 2</h3>
+      <label htmlFor="tarefa">
+        tarefa:
+        <input value={tarefa} onChange={onChangeTarefa} name="tarefa" id="tarefa" />
+      </label>
+      <button type="button" onClick={atualizarLista}>adicionar Tarefa</button>
+      <ul>
+        {listaTarefa.map((task) => {
+          return <li key={task}>{task}</li>;
+        })}
+      </ul>
+      <div>
+        <button onClick={saveTarefa}>Guardar tarefa</button>
+        <button onClick={loadTarefa}>Acessar tarefa</button>
+      </div>
+    </Form>
+  );
 }
